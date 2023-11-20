@@ -12,6 +12,7 @@ class QuotesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // create 10 quotes
+        \App\Models\Quotes::factory(10)->create();
     }
 }

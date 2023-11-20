@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('table_quotes_favorites', function (Blueprint $table) {
+        Schema::create('quotes_favorites', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
             $table->string('quote_id');

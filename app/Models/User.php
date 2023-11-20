@@ -42,4 +42,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the favorite quotes for the user.
+     */
+    public function favoriteQuotes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Quotes::class, 'quotes_favorites', 'user_id', 'quote_id');
+    }
 }
