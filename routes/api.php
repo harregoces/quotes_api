@@ -82,6 +82,13 @@ Route::get('/quotes', 'App\Http\Controllers\QuoteController@quotes');
  */
 Route::get('/quotes/new', 'App\Http\Controllers\QuoteController@newQuotes');
 
+
+
+
+
+
+
+
 /**
  * Api endpoint /favorite-quotes
  * Type: GET

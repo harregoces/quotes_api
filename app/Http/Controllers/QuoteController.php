@@ -103,8 +103,9 @@ class QuoteController extends BaseController
      */
     public function secureQuotes(Request $request): \Illuminate\Http\JsonResponse
     {
+        $user = $request->user();
         $quoteLimit = $request->input('quoteLimit', 10);
-        $quotes = $this->quoteService->getSecureQuotes($quoteLimit, CacheServiceInterface::TEN_SECURE_QUOTES_KEY );
+        $quotes = $this->quoteService->getSecureQuotes($user->id, $quoteLimit, CacheServiceInterface::TEN_SECURE_QUOTES_KEY );
         return response()->json([
             'quotes' => $quotes
         ], 200);
@@ -117,8 +118,9 @@ class QuoteController extends BaseController
      */
     public function newSecureQuotes(Request $request): \Illuminate\Http\JsonResponse
     {
+        $user = $request->user();
         $quoteLimit = $request->input('quoteLimit', 10);
-        $quotes = $this->quoteService->getSecureQuotes($quoteLimit, CacheServiceInterface::TEN_SECURE_QUOTES_KEY, true);
+        $quotes = $this->quoteService->getSecureQuotes($user->id, $quoteLimit, CacheServiceInterface::TEN_SECURE_QUOTES_KEY, true);
         return response()->json([
             'quotes' => $quotes
         ], 200);
