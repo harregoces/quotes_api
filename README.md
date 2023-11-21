@@ -79,3 +79,7 @@ The API will return a token that can be used to authenticate future requests. To
     "token": "nnu5PxuJ1xplBbdJrtNM2Q==0s5CpRd6HH0ba0Qm"
 }
 ```
+
+### API Diagram
+![API Diagram](/resources/images/thirdpartyuse.png)
+
