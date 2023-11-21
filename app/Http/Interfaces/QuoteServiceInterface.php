@@ -17,4 +17,11 @@ interface QuoteServiceInterface
      * @return string
      */
     public function getQuotes(int $userid): string;
+
+    /**
+     * getTodayQuote
+     * Description: This method fetches the today quote from a quote service
+     * @return string
+     */
+    public function getTodayQuote(): string;
 }

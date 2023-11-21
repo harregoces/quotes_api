@@ -41,6 +41,20 @@ Route::post('logout', 'App\Http\Controllers\UserController@logout')->middleware(
 Route::post('/register', 'App\Http\Controllers\UserController@register')->name('register');
 
 /**
+ * Api endpoint /api/today
+ * Type: GET
+ * Description: Returns a quote for non-authenticated user
+ */
+Route::get('/today', 'App\Http\Controllers\QuoteController@today');
+
+/**
+ * Api endpoint /api/today/new
+ * Type: GET
+ * Description: clear cache and returns a quote for non-authenticated user
+ */
+Route::get('/today/new', 'App\Http\Controllers\QuoteController@newToday');
+
+/**
  * Api endpoint /api/secure-quotes
  * Type: GET
  * Description: Returns quotes for authenticated user

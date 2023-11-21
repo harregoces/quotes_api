@@ -11,6 +11,7 @@ interface CacheServiceInterface
 
     const TEN_SECURE_QUOTES_KEY = 'ten_secure_quotes';
     const FIVE_QUOTES_KEY = 'five_quotes';
+    const TODAY_QUOTE_KEY = 'today_quote';
 
     /**
      * get

@@ -27,6 +27,33 @@ class QuoteController extends BaseController
     }
 
     /**
+     * Api endpoint /api/today
+     * Type: GET
+     * Description: Returns a quote for non-authenticated user
+     */
+    public function today(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $quote = $this->quoteService->getTodayQuote();
+        return response()->json([
+            'quote' => $quote
+        ], 200);
+    }
+
+    /**
+     * Api endpoint /api/today/new
+     * Type: GET
+     * Description: clear cache and returns a quote for non-authenticated user
+     */
+    public function newToday(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $quote = $this->quoteService->getTodayQuote(true);
+        return response()->json([
+            'quote' => $quote
+        ], 200);
+    }
+
+
+    /**
      * Api endpoint /api/favoriteQuotes
      * Type: GET
      * Description: Returns favorite quotes for authenticated user
@@ -36,6 +63,34 @@ class QuoteController extends BaseController
         $quoteLimit = $request->input('quoteLimit', 10);
         $user = $request->user();
         $quotes = $this->quoteService->getFavoriteQuotes($user->id, $quoteLimit);
+        return response()->json([
+            'quotes' => $quotes
+        ], 200);
+    }
+
+    /**
+     * Api endpoint /api/quotes
+     * Type: GET
+     * Description: Returns five random quotes for non-authenticated user and authenticated user
+     */
+    public function quotes(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $quoteLimit = $request->input('quoteLimit', 5);
+        $quotes = $this->quoteService->getUnSecureQuotes($quoteLimit, CacheServiceInterface::FIVE_QUOTES_KEY);
+        return response()->json([
+            'quotes' => $quotes
+        ], 200);
+    }
+
+    /**
+     * Api endpoint /api/quotes/new
+     * Type: GET
+     * Description: clear cache and returns five random quotes for non-authenticated user and authenticated user
+     */
+    public function newQuotes(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $quoteLimit = $request->input('quoteLimit', 5);
+        $quotes = $this->quoteService->getUnSecureQuotes($quoteLimit, CacheServiceInterface::FIVE_QUOTES_KEY, true);
         return response()->json([
             'quotes' => $quotes
         ], 200);
@@ -77,35 +132,7 @@ class QuoteController extends BaseController
      */
     public function getFiveRandomQuotes(bool $new = false): \Illuminate\Http\JsonResponse
     {
-        $quotes = $this->quoteService->getQuotes(5, $new);
-        return response()->json([
-            'quotes' => $quotes
-        ], 200);
-    }
-
-    /**
-     * Api endpoint /api/quotes
-     * Type: GET
-     * Description: Returns five random quotes for non-authenticated user and authenticated user
-     */
-    public function quotes(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $quoteLimit = $request->input('quoteLimit', 5);
-        $quotes = $this->quoteService->getQuotes($quoteLimit, CacheServiceInterface::FIVE_QUOTES_KEY);
-        return response()->json([
-            'quotes' => $quotes
-        ], 200);
-    }
-
-    /**
-     * Api endpoint /api/quotes/new
-     * Type: GET
-     * Description: clear cache and returns five random quotes for non-authenticated user and authenticated user
-     */
-    public function newQuotes(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $quoteLimit = $request->input('quoteLimit', 5);
-        $quotes = $this->quoteService->getQuotes($quoteLimit, CacheServiceInterface::FIVE_QUOTES_KEY, true);
+        $quotes = $this->quoteService->getQuotesForUnAuthenticatedUsers(5, CacheServiceInterface::FIVE_QUOTES_KEY, $new);
         return response()->json([
             'quotes' => $quotes
         ], 200);

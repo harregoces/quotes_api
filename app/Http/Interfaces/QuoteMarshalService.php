@@ -13,9 +13,9 @@ interface QuoteMarshalService
     /**
      * marshal
      * Description: This method marshals a quote
-     * Parameter: string $quote: quote to marshal
-     * @param string $quote
+     * Parameter: string $quotesString: quote in string to marshal
+     * @param string $quotesString
      * @return array
      */
-    public function marshal(string $quote): array;
+    public function marshal(string $quotesString): array;
 }

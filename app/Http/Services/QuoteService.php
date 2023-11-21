@@ -48,6 +48,34 @@ class QuoteService
         $this->quotesDatabaseService = $quotesDatabaseService;
     }
 
+    /**
+     * getTodayQuote
+     * Description: This method returns the quote of the day
+     * @param bool $force
+     * @return Quote
+     */
+    public function getTodayQuote(bool $force = false): Quote
+    {
+        if ($force) {
+            $this->cacheService->clear($this->cacheService::TODAY_QUOTE_KEY, 0);
+        } else {
+            $quoteString = $this->cacheService->get($this->cacheService::TODAY_QUOTE_KEY, 0);
+            if($quoteString) {
+                $quoteMarshal = $this->quotesMarshalService->marshal($quoteString);
+                if ($quoteMarshal) {
+                    $quote = $quoteMarshal[0];
+                    $quote->setCached(true);
+                    return $quote;
+                }
+            }
+        }
+
+        $quoteString = $this->quotesService->getTodayQuote();
+        $this->cacheService->set($this->cacheService::TODAY_QUOTE_KEY, 0, $quoteString);
+        $quote = $this->quotesMarshalService->marshal($quoteString);
+        return $quote[0];
+    }
+
     public function getQuotesForAuthenticatedUsers(int$userId, int $quoteLimit, string $key, bool $force = false): array
     {
         return $this->getSecureQuotes($userId, $quoteLimit, $key, $force);
@@ -131,6 +159,7 @@ class QuoteService
     /**
      * getFavoriteQuotes
      * Description: This method saves a quote as favorite for authenticated users
+     * @param int $userId
      * @param int $quoteId
      * @return array
      */

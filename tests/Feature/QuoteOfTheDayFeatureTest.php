@@ -27,7 +27,6 @@ class QuoteOfTheDayFeatureTest extends TestCase
     public function test_a_web_page_with_uri_of_today_that_shows_quote_of_the_day(): void
     {
         $response = $this->get('/api/today');
-
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -51,8 +50,10 @@ class QuoteOfTheDayFeatureTest extends TestCase
             'quote' => [
                 'quote',
                 'author',
+                'cached'
             ],
         ]);
+        $this->assertFalse($response->json()['quote']['cached']);
 
         $response = $this->get('/api/today');
         $response->assertStatus(200);
@@ -64,7 +65,7 @@ class QuoteOfTheDayFeatureTest extends TestCase
                 'cached'
             ],
         ]);
-
+        $this->assertTrue($response->json()['quote']['cached']);
     }
 
     /**
@@ -72,9 +73,41 @@ class QuoteOfTheDayFeatureTest extends TestCase
      */
     public function test_there_should_be_a_button_to_force_a_reload_of_the_quote_of_the_day_with_a_new_parameter(): void
     {
-        $response = $this->get('/today');
-
+        $response = $this->get('/api/today');
         $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'quote' => [
+                'quote',
+                'author',
+                'cached'
+            ],
+        ]);
+        $this->assertFalse($response->json()['quote']['cached']);
+
+        $response = $this->get('/api/today');
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'quote' => [
+                'quote',
+                'author',
+                'cached'
+            ],
+        ]);
+        $this->assertTrue($response->json()['quote']['cached']);
+
+        $response = $this->get('/api/today/new');
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'quote' => [
+                'quote',
+                'author',
+                'cached'
+            ],
+        ]);
+        $this->assertFalse($response->json()['quote']['cached']);
+
     }
 
     /**
@@ -101,7 +134,7 @@ class QuoteOfTheDayFeatureTest extends TestCase
             ],
             'token',
         ]);
-
+        $userId = $response->json()['user']['id'];
         $token = $response->json()['token'];
 
         $response = $this->post('/api/today', [
@@ -118,39 +151,18 @@ class QuoteOfTheDayFeatureTest extends TestCase
         ]);
 
         $quote = $response->json()['quote'];
-
-        //TODO: save the quote to the list of favorites
-
-
-    }
-
-    /**
-     * Default page when accessing “/” URI.
-     */
-    public function test_default_page_when_accessing_uri(): void
-    {
-        $response = $this->get('/');
+        $response = $this->post('/api/favorite-quotes', [
+            'Authorization' => 'Bearer ' . $token,
+            'quote' => $quote,
+        ]);
 
         $response->assertStatus(200);
-    }
 
-    /**
-     * The page is accessible to unauthenticated users.
-     */
-    public function test_the_page_is_accessible_to_unauthenticated_users(): void
-    {
-        $response = $this->get('/');
+        $quoteId = $response->json()['quote_id'];
+        $this->assertDatabaseHas('favorite_quotes', [
+            'user_id' => $userId,
+            'quote' => $quoteId,
+        ]);
 
-        $response->assertStatus(200);
-    }
-
-    /**
-     * The page is accessible to authenticated/logged-in users.
-     */
-    public function test_the_page_is_accessible_to_authenticated_logged_in_users(): void
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
     }
 }

@@ -15,9 +15,9 @@ class ZenQuotesMarshalService implements QuoteMarshalService
     /**
      * marshal string to quote object or array of quote object
      */
-    public function marshal(string $response) : array
+    public function marshal(string $quotesString) : array
     {
-        $quotes = json_decode($response, true);
+        $quotes = json_decode($quotesString, true);
         $quoteObjects = [];
         foreach ($quotes as $quote) {
             $quoteObjects[] = new Quote(
