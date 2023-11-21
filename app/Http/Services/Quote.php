@@ -13,6 +13,11 @@ use JsonSerializable;
 class Quote implements JsonSerializable
 {
     /**
+     * @var int
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $quote;
@@ -32,10 +37,11 @@ class Quote implements JsonSerializable
      * @param string $quote
      * @param string $author
      */
-    public function __construct(string $quote, string $author)
+    public function __construct(string $quote, string $author, int $id = null)
     {
         $this->quote = $quote;
         $this->author = $author;
+        $this->id = $id;
     }
 
     /**
@@ -83,10 +89,15 @@ class Quote implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return [
+        $returnResponse = [
             'quote' => $this->quote,
             'author' => $this->author,
             'cached' => $this->cached
         ];
+
+        if($this->id) {
+            $returnResponse['id'] = $this->id;
+        }
+        return $returnResponse;
     }
 }

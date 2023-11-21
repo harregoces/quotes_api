@@ -33,36 +33,43 @@ class QuoteService
     private CacheServiceInterface $cacheService;
 
     /**
+     * @var QuotesDatabaseService
+     */
+    private QuotesDatabaseService $quotesDatabaseService;
+
+    /**
      * Quote constructor.
      */
-    public function __construct()
+    public function __construct(QuotesDatabaseService $quotesDatabaseService)
     {
         $this->quotesService = new ZenQuotesService();
         $this->quotesMarshalService = new ZenQuotesMarshalService();
         $this->cacheService = new SqliteCacheService();
+        $this->quotesDatabaseService = $quotesDatabaseService;
     }
 
-    public function getQuotes(int $quoteLimit, string $key, bool $force = false): array
+    public function getQuotesForAuthenticatedUsers(int$userId, int $quoteLimit, string $key, bool $force = false): array
     {
-        if (auth()->user()) {
-            return $this->getSecureQuotes($quoteLimit, $key, $force);
-        } else {
-            return $this->getUnSecureQuotes($quoteLimit, $key, $force);
-        }
+        return $this->getSecureQuotes($userId, $quoteLimit, $key, $force);
+    }
+
+    public function getQuotesForUnAuthenticatedUsers(int $quoteLimit, string $key, bool $force = false): array
+    {
+        return $this->getUnSecureQuotes($quoteLimit, $key, $force);
     }
 
     /**
      * getSecureQuotes
      * Description: This method returns the quotes for authenticated users
+     * @param int $userId
      * @param int $quoteLimit
      * @param string $key
      * @param bool $force
      * @return array
      */
-    public function getSecureQuotes(int $quoteLimit, string $key, bool $force = false): array
+    public function getSecureQuotes(int $userId, int $quoteLimit, string $key, bool $force = false): array
     {
-        $user = auth()->user();
-        return $this->getInternalQuotes($user->id, $quoteLimit, $key, $force);
+        return $this->getInternalQuotes($userId, $quoteLimit, $key, $force);
     }
 
     /**
@@ -121,4 +128,14 @@ class QuoteService
         }
     }
 
+    /**
+     * getFavoriteQuotes
+     * Description: This method saves a quote as favorite for authenticated users
+     * @param int $quoteId
+     * @return array
+     */
+    public function getFavoriteQuotes(int $userId, int $quoteId): array
+    {
+        return $this->quotesDatabaseService->getFavoriteQuotes($userId);
+    }
 }

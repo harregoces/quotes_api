@@ -27,6 +27,21 @@ class QuoteController extends BaseController
     }
 
     /**
+     * Api endpoint /api/favoriteQuotes
+     * Type: GET
+     * Description: Returns favorite quotes for authenticated user
+     */
+    public function favoriteQuotes(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $quoteLimit = $request->input('quoteLimit', 10);
+        $user = $request->user();
+        $quotes = $this->quoteService->getFavoriteQuotes($user->id, $quoteLimit);
+        return response()->json([
+            'quotes' => $quotes
+        ], 200);
+    }
+
+    /**
      * Api endpoint /api/secure-quotes
      * Type: GET
      * Description: Returns quotes for authenticated user

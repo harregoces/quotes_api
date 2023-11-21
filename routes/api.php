@@ -24,7 +24,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  * Type: POST
  * Description: Returns a token for the authenticated user
  */
-Route::post('/login', 'App\Http\Controllers\UserController@login')->name('login');
+Route::post('login', 'App\Http\Controllers\UserController@login')->name('login');
+
+/**
+ * Api endpoint /api/logout
+ * Type: POST
+ * Description: Returns a token for the authenticated user
+ */
+Route::post('logout', 'App\Http\Controllers\UserController@logout')->middleware('auth:sanctum');
 
 /**
  * Api endpoint /api/register
@@ -63,6 +70,13 @@ Route::get('/quotes/new', 'App\Http\Controllers\QuoteController@newQuotes');
 
 /**
  * Api endpoint /favorite-quotes
+ * Type: GET
+ * Description: Returns favorite quotes for authenticated user
+ */
+Route::get('/favorite-quotes', 'App\Http\Controllers\QuoteController@favoriteQuotes')->middleware('auth:sanctum');
+
+/**
+ * Api endpoint /report-favorite-quotes
  * Type: GET
  * Description: Returns a report of the favorite quotes
  */

@@ -10,6 +10,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\Quotes as QuotesModel;
+use App\Models\User as UserModel;
 
 class QuotesFavorites extends Model
 {
@@ -21,4 +24,20 @@ class QuotesFavorites extends Model
         'user_id',
         'quote_id',
     ];
+
+    /**
+     * Get the quote.
+     */
+    public function quotes(): BelongsToMany
+    {
+        return $this->belongsToMany(QuotesModel::class, 'quotes_favorites', 'quote_id', 'quote_id');
+    }
+
+    /**
+     * Get the user.
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(UserModel::class, 'quotes_favorites', 'user_id', 'user_id');
+    }
 }
