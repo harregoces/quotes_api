@@ -156,4 +156,15 @@ class QuoteController extends BaseController
             'quote' => $quoteSaved
         ], 200);
     }
+
+    /**
+     * Api endpoint /api/report-favorite-quotes
+     */
+    public function reportFavoriteQuotes(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $quotes = $this->quoteService->getReportOfFavoriteQuotes();
+        return response()->json([
+            'quotes' => $quotes
+        ], 200);
+    }
 }

@@ -34,10 +34,28 @@ class QuotesFavorites extends Model
     }
 
     /**
+     * Get single quote.
+     */
+    public function quote()
+    {
+        $quotesFavorites = $this->quotes();
+        return $quotesFavorites->first();
+    }
+
+    /**
      * Get the user.
      */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(UserModel::class, 'quotes_favorites', 'id', 'user_id');
+    }
+
+    /**
+     * Get single user.
+     */
+    public function user()
+    {
+        $quotesFavorites = $this->users();
+        return $quotesFavorites->first();
     }
 }

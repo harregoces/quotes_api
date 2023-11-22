@@ -96,4 +96,30 @@ class QuotesDatabaseService
 
         return new Quote($quoteRecord->quote, $quoteRecord->author, $quoteRecord->id);
     }
+
+    /**
+     * getAllFavoriteQuotes
+     * Description: This method returns a report of favorite quotes for all users
+     * @return array
+     */
+    public function getAllFavoriteQuotes(): array
+    {
+        $quotesRecords = $this->quotesFavoritesModel->all();
+        $allFavorites = [];
+        foreach ($quotesRecords as $quoteRecord) {
+            $allFavorites[] = [
+                'user' => [
+                    'id' => $quoteRecord->user()->id,
+                    'email' => $quoteRecord->user()->email,
+                    'name' => $quoteRecord->user()->name,
+                ],
+                'quote' => [
+                    'id' => $quoteRecord->quote()->id,
+                    'quote' => $quoteRecord->quote()->quote,
+                    'author' => $quoteRecord->quote()->author,
+                ]
+            ];
+        }
+        return $allFavorites;
+    }
 }

@@ -180,4 +180,14 @@ class QuoteService
     {
         return $this->quotesDatabaseService->saveFavoriteQuote($userId, $quote);
     }
+
+    /**
+     * getReportOfFavoriteQuotes
+     * Description: This method returns a report of favorite quotes for authenticated users
+     * @return array
+     */
+    public function getReportOfFavoriteQuotes(): array
+    {
+        return $this->quotesDatabaseService->getAllFavoriteQuotes();
+    }
 }

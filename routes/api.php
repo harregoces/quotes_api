@@ -96,21 +96,17 @@ Route::get('/favorite-quotes', 'App\Http\Controllers\QuoteController@favoriteQuo
  */
 Route::post('/favorite-quotes', 'App\Http\Controllers\QuoteController@saveFavoriteQuotes')->middleware('auth:sanctum');
 
-
-
-
-
-
-
-
-
-
 /**
  * Api endpoint /api/report-favorite-quotes
  * Type: GET
  * Description: Returns a report of the all user and the favorite quotes
  */
-Route::get('/report-favorite-quotes', 'App\Http\Controllers\QuoteController@favoriteQuotes')->middleware('auth:sanctum');
+Route::get('/report-favorite-quotes', 'App\Http\Controllers\QuoteController@reportFavoriteQuotes')->middleware('auth:sanctum');
+
+
+
+
+
 
 /**
  * Api endpoint /api/favorite-quotes/{id}
