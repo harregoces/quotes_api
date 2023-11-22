@@ -30,7 +30,7 @@ class QuotesFavorites extends Model
      */
     public function quotes(): BelongsToMany
     {
-        return $this->belongsToMany(QuotesModel::class, 'quotes_favorites', 'quote_id', 'quote_id');
+        return $this->belongsToMany(QuotesModel::class, 'quotes_favorites', 'id', 'quote_id');
     }
 
     /**
@@ -38,6 +38,6 @@ class QuotesFavorites extends Model
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(UserModel::class, 'quotes_favorites', 'user_id', 'user_id');
+        return $this->belongsToMany(UserModel::class, 'quotes_favorites', 'id', 'user_id');
     }
 }

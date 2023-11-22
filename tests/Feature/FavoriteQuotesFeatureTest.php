@@ -20,14 +20,25 @@ class FavoriteQuotesFeatureTest extends TestCase
     /**
      * A web page with URI of “/api/favorite-quotes” that shows all quotes that have been added to the list of favorites.
      * There should be a button to delete each quote from the list of favorites.
-     * The page is accessible to authenticated/logged in users only.
+     * The page is accessible to authenticated/logged-in users only.
      * If the list of favorite quotes is empty, a message should be shown and suggest to the user how to add quotes to the list.
      */
     public function testFavoriteQuotes(): void
     {
+        $name = 'test favorite quotes';
+        $email = 'testfavorite@test.com';
+        $password = 'password';
+
+        $this->post('/api/register', [
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password,
+        ]);
+
         $response = $this->post('/api/login', [
-            'email' => 'test@test.com',
-            'password' => 'password',
+            'email' => $email,
+            'password' => $password,
         ]);
 
         $response->assertJsonStructure([
@@ -35,7 +46,6 @@ class FavoriteQuotesFeatureTest extends TestCase
                 'id',
                 'name',
                 'email',
-                'email_verified_at',
                 'created_at',
                 'updated_at',
             ],
@@ -43,7 +53,40 @@ class FavoriteQuotesFeatureTest extends TestCase
         ]);
 
         $token = $response->json()['token'];
+        $user = $response->json()['user'];
 
-        // TODO: Add favorite quotes
+        $this->post('/api/favorite-quotes', [
+            'quote' => [
+                'quote' => 'test quote',
+                'author' => 'test author',
+            ],
+        ], [
+            'Authorization' => 'Bearer ' . $token,
+        ]);
+
+        $this->assertDatabaseHas('quotes', [
+            'quote' => 'test quote',
+            'author' => 'test author',
+        ]);
+
+        $this->assertDatabaseHas('quotes_favorites', [
+            'user_id' => $user['id'],
+        ]);
+
+        $response = $this->get('/api/favorite-quotes', [
+            'Authorization' => 'Bearer ' . $token,
+        ]);
+
+        $response->assertJsonStructure([
+            'quotes' => [
+                '*' => [
+                    'id',
+                    'quote',
+                    'author',
+                ],
+            ],
+        ]);
+
+        $this->assertEquals('test quote', $response->json()['quotes'][0]['quote']);
     }
 }

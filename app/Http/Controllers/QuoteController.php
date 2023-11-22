@@ -61,8 +61,7 @@ class QuoteController extends BaseController
     public function favoriteQuotes(Request $request): \Illuminate\Http\JsonResponse
     {
         $quoteLimit = $request->input('quoteLimit', 10);
-        $user = $request->user();
-        $quotes = $this->quoteService->getFavoriteQuotes($user->id, $quoteLimit);
+        $quotes = $this->quoteService->getFavoriteQuotes($request->user()->id, null, $quoteLimit);
         return response()->json([
             'quotes' => $quotes
         ], 200);
@@ -141,23 +140,20 @@ class QuoteController extends BaseController
     }
 
     /**
-     * Api endpoint /saveFavorite
+     * Api endpoint /api/favorite-quotes
      * Type: POST
      * Description: Marks a quote as favorite for authenticated user
      */
-    public function saveFavorite(Request $request): \Illuminate\Http\JsonResponse
+    public function saveFavoriteQuotes(Request $request): \Illuminate\Http\JsonResponse
     {
-        /**
-         * Get a quote from request and save it in the favorite quotes table
-         */
         $quote = new Quote(
-            $request->input('quote'),
-            $request->input('author'),
+            $request->input('quote.quote'),
+            $request->input('quote.author')
         );
 
-        $this->quoteService->saveFavorite($quoteId);
+        $quoteSaved = $this->quoteService->saveFavoriteQuote($request->user()->id, $quote);
         return response()->json([
-            'message' => 'Quote saved as favorite'
+            'quote' => $quoteSaved
         ], 200);
     }
 }

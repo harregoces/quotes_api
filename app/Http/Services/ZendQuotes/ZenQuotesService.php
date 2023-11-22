@@ -22,7 +22,7 @@ class ZenQuotesService implements QuoteServiceInterface
      * @param int $numberOfQuotes
      * @return string
      */
-    public function getQuotes(int $numberOfQuotes) : string
+    public function getQuotes(int $numberOfQuotes = 5) : string
     {
         $curl = curl_init();
         curl_setopt_array($curl, array(

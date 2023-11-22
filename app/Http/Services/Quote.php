@@ -36,6 +36,7 @@ class Quote implements JsonSerializable
      * Quote constructor.
      * @param string $quote
      * @param string $author
+     * @param int|null $id
      */
     public function __construct(string $quote, string $author, int $id = null)
     {
@@ -62,6 +63,16 @@ class Quote implements JsonSerializable
     public function getAuthor(): string
     {
         return $this->author;
+    }
+
+    /**
+     * getId
+     * Description: This method returns the id
+     * @return ?int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     /**

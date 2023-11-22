@@ -137,10 +137,7 @@ class QuoteOfTheDayFeatureTest extends TestCase
         $userId = $response->json()['user']['id'];
         $token = $response->json()['token'];
 
-        $response = $this->post('/api/today', [
-            'Authorization' => 'Bearer ' . $token,
-        ]);
-
+        $response = $this->get('/api/today');
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
@@ -151,17 +148,17 @@ class QuoteOfTheDayFeatureTest extends TestCase
         ]);
 
         $quote = $response->json()['quote'];
-        $response = $this->post('/api/favorite-quotes', [
-            'Authorization' => 'Bearer ' . $token,
-            'quote' => $quote,
-        ]);
+        $response = $this->post('/api/favorite-quotes',
+            [ 'quote' => $quote, ],
+            [ 'Authorization' => 'Bearer ' . $token,]
+        );
 
         $response->assertStatus(200);
+        $quoteId =  $response->json()['quote']['id'];
 
-        $quoteId = $response->json()['quote_id'];
-        $this->assertDatabaseHas('favorite_quotes', [
+        $this->assertDatabaseHas('quotes_favorites', [
             'user_id' => $userId,
-            'quote' => $quoteId,
+            'quote_id' => $quoteId,
         ]);
 
     }

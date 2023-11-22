@@ -12,11 +12,11 @@ interface QuoteServiceInterface
     /**
      * getQuotes
      * Description: This method fetches quotes from a quote service
-     * Parameter: int $userid: The user id
-     * @param int $userid
+     * Parameter: int $numberOfQuotes: number of quotes to fetch
+     * @param int $numberOfQuotes
      * @return string
      */
-    public function getQuotes(int $userid): string;
+    public function getQuotes(int $numberOfQuotes): string;
 
     /**
      * getTodayQuote

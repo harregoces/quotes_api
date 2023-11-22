@@ -31,12 +31,18 @@ class QuotesDatabaseService
      * getFavoriteQuotes
      * Description: This method returns the favorite quotes for specific users
      * @param int $userId
+     * @param int|null $quoteId
      * @param int $quoteLimit
      * @return array
      */
-    public function getFavoriteQuotes(int $userId, int $quoteLimit = 5): array
+    public function getFavoriteQuotes(int $userId, int $quoteId = null, int $quoteLimit = 5): array
     {
-        $quotesRecords = $this->quotesFavoritesModel->where('user_id', $userId)->limit($quoteLimit)->get();
+        $quotesQuery = $this->quotesFavoritesModel->where('user_id', $userId);
+        if ($quoteId) {
+            $quotesQuery->where('quote_id', $quoteId);
+        }
+        $quotesRecords = $quotesQuery->limit($quoteLimit)
+            ->get();
         return $this->transform($quotesRecords);
     }
 
@@ -60,6 +66,34 @@ class QuotesDatabaseService
             }
 
         }
+
         return $quotes;
+    }
+
+    /**
+     * saveFavoriteQuote
+     * Description: This method saves a quote as favorite for specific user
+     * @param int $userId
+     * @param Quote $quote
+     * @return Quote
+     */
+    public function saveFavoriteQuote(int $userId, Quote $quote): Quote
+    {
+        $quoteRecord = $this->quotesModel->where('id', $quote->getId())->first();
+        if (!$quoteRecord) {
+            $quoteRecord = new QuoteModel();
+            $quoteRecord->quote = $quote->getQuote();
+            $quoteRecord->author = $quote->getAuthor();
+            $quoteRecord->save();
+        }
+        $quoteFavoriteRecord = $this->quotesFavoritesModel->where('user_id', $userId)->where('quote_id', $quoteRecord->id)->first();
+        if (!$quoteFavoriteRecord) {
+            $quoteFavoriteRecord = new QuotesFavoritesModel();
+            $quoteFavoriteRecord->user_id = $userId;
+            $quoteFavoriteRecord->quote_id = $quoteRecord->id;
+            $quoteFavoriteRecord->save();
+        }
+
+        return new Quote($quoteRecord->quote, $quoteRecord->author, $quoteRecord->id);
     }
 }

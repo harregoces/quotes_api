@@ -144,13 +144,13 @@ class QuoteService
             if (count($quotes) >= $quoteLimit) {
                 return (array) array_slice($quotes, 0, $quoteLimit);
             }
-            $newQuotes = $this->quotesService->getQuotes($userid);
+            $newQuotes = $this->quotesService->getQuotes();
             $newQuotes = $this->quotesMarshalService->marshal($newQuotes);
             $quotes = array_merge($quotes, $newQuotes);
-            $this->cacheService->set($key, $userid, $quotes);
+            $this->cacheService->set($key, $userid, json_encode($quotes));
             return (array) array_slice($quotes, 0, $quoteLimit);
         } else {
-            $quotes = $this->quotesService->getQuotes($userid);
+            $quotes = $this->quotesService->getQuotes();
             $this->cacheService->set($key, $userid, $quotes);
             return array_slice($this->quotesMarshalService->marshal($quotes), 0, $quoteLimit);
         }
@@ -160,11 +160,24 @@ class QuoteService
      * getFavoriteQuotes
      * Description: This method saves a quote as favorite for authenticated users
      * @param int $userId
-     * @param int $quoteId
+     * @param int|null $quoteId
+     * @param int $quoteLimit
      * @return array
      */
-    public function getFavoriteQuotes(int $userId, int $quoteId): array
+    public function getFavoriteQuotes(int $userId, int $quoteId = null, int $quoteLimit = 5): array
     {
-        return $this->quotesDatabaseService->getFavoriteQuotes($userId);
+        return $this->quotesDatabaseService->getFavoriteQuotes($userId, $quoteId, $quoteLimit);
+    }
+
+    /**
+     * saveFavoriteQuote
+     * Description: This method saves a quote as favorite for authenticated users
+     * @param int $userId
+     * @param Quote $quote
+     * @return Quote
+     */
+    public function saveFavoriteQuote(int $userId, Quote $quote): Quote
+    {
+        return $this->quotesDatabaseService->saveFavoriteQuote($userId, $quote);
     }
 }

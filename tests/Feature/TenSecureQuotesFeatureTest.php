@@ -46,9 +46,7 @@ class TenSecureQuotesFeatureTest extends TestCase
         $token = $response->json()['token'];
 
         $response = $this->get('/api/secure-quotes',
-            [
-                'Authorization' => 'Bearer ' . $token,
-            ]
+            [ 'Authorization' => 'Bearer ' . $token, ]
         );
         $response->assertStatus(200);
 
@@ -63,7 +61,9 @@ class TenSecureQuotesFeatureTest extends TestCase
         ]);
         $this->assertFalse($response->json()['quotes'][0]['cached']);
 
-        $response = $this->get('/api/secure-quotes');
+        $response = $this->get('/api/secure-quotes',
+            [ 'Authorization' => 'Bearer ' . $token, ]
+        );
         $response->assertStatus(200);
         $this->assertTrue($response->json()['quotes'][0]['cached']);
     }
