@@ -103,21 +103,16 @@ Route::post('/favorite-quotes', 'App\Http\Controllers\QuoteController@saveFavori
  */
 Route::get('/report-favorite-quotes', 'App\Http\Controllers\QuoteController@reportFavoriteQuotes')->middleware('auth:sanctum');
 
-
-
-
-
-
 /**
  * Api endpoint /api/favorite-quotes/{id}
  * Type: GET
  * Description: Get specific favorite quote for authenticated user
  */
-Route::get('/favorite-quotes/{id}', 'App\Http\Controllers\QuoteController@getFavorite')->middleware('auth:sanctum');
+Route::get('/favorite-quotes/{id}', 'App\Http\Controllers\QuoteController@getFavoriteQuote')->middleware('auth:sanctum');
 
 /**
  * Api endpoint /api/favorite-quotes/{id}
  * Type: DELETE
  * Description: Delete specific favorite quote for authenticated user
  */
-Route::delete('/favorite-quotes/{id}', 'App\Http\Controllers\QuoteController@deleteFavorite')->middleware('auth:sanctum');
+Route::delete('/favorite-quotes/{id}', 'App\Http\Controllers\QuoteController@deleteFavoriteQuote')->middleware('auth:sanctum');

@@ -47,6 +47,22 @@ class QuotesDatabaseService
     }
 
     /**
+     * getFavoriteQuote
+     * Description: This method returns a favorite quote for specific user
+     * @param int $userId
+     * @param int $quoteId
+     * @return Quote
+     */
+    public function getFavoriteQuote(int $userId, int $quoteId): Quote
+    {
+        $quotesRecords = $this->quotesFavoritesModel->where('user_id', $userId)
+            ->where('quote_id', $quoteId)
+            ->get();
+        $quotes = $this->transform($quotesRecords);
+        return $quotes[0];
+    }
+
+    /**
      * transform
      * Description: This method transforms the quotes collection to Quotes object
      * @param $quotesRecords
@@ -121,5 +137,19 @@ class QuotesDatabaseService
             ];
         }
         return $allFavorites;
+    }
+
+    /**
+     * deleteFavoriteQuote
+     * Description: This method deletes a favorite quote for specific user
+     * @param int $userId
+     * @param int $quoteId
+     * @return void
+     */
+    public function deleteFavoriteQuote(int $userId, int $quoteId): void
+    {
+        $this->quotesFavoritesModel->where('user_id', $userId)
+            ->where('quote_id', $quoteId)
+            ->delete();
     }
 }

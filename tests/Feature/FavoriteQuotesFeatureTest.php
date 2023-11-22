@@ -88,5 +88,39 @@ class FavoriteQuotesFeatureTest extends TestCase
         ]);
 
         $this->assertEquals('test quote', $response->json()['quotes'][0]['quote']);
+
+        $quoteId = $response->json()['quotes'][0]['id'];
+        $response = $this->get('/api/favorite-quotes/' . $quoteId,
+            [
+                'Authorization' => 'Bearer ' . $token,
+            ]
+        );
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'quote' => [
+                'id',
+                'quote',
+                'author',
+            ],
+        ]);
+
+        /**
+         * test delete favorite quote
+         */
+        $response = $this->delete('/api/favorite-quotes/' . $quoteId,
+            [
+                'Authorization' => 'Bearer ' . $token,
+            ]
+        );
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'message',
+        ]);
+
+        $this->assertDatabaseMissing('quotes_favorites', [
+            'user_id' => $user['id'],
+            'quote_id' => $quoteId,
+        ]);
+
     }
 }

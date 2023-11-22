@@ -68,6 +68,17 @@ class QuoteController extends BaseController
     }
 
     /**
+     * Api endpoint /api/favorite-quotes/{id}
+     */
+    public function getFavoriteQuote(Request $request, int $id): \Illuminate\Http\JsonResponse
+    {
+        $quote = $this->quoteService->getFavoriteQuote($request->user()->id, $id);
+        return response()->json([
+            'quote' => $quote
+        ], 200);
+    }
+
+    /**
      * Api endpoint /api/quotes
      * Type: GET
      * Description: Returns five random quotes for non-authenticated user and authenticated user
@@ -165,6 +176,19 @@ class QuoteController extends BaseController
         $quotes = $this->quoteService->getReportOfFavoriteQuotes();
         return response()->json([
             'quotes' => $quotes
+        ], 200);
+    }
+
+    /**
+     * Api endpoint /api/favorite-quotes/{id}
+     * Type: DELETE
+     * Description: Delete a quote from favorite quotes for authenticated user
+     */
+    public function deleteFavoriteQuote(Request $request, int $id): \Illuminate\Http\JsonResponse
+    {
+        $this->quoteService->deleteFavoriteQuote($request->user()->id, $id);
+        return response()->json([
+            'message' => 'Quote deleted successfully'
         ], 200);
     }
 }

@@ -170,6 +170,18 @@ class QuoteService
     }
 
     /**
+     * getFavoriteQuote
+     * Description: This method returns a favorite quote for authenticated users
+     * @param int $userId
+     * @param int $quoteId
+     * @return Quote
+     */
+    public function getFavoriteQuote(int $userId, int $quoteId): Quote
+    {
+        return $this->quotesDatabaseService->getFavoriteQuote($userId, $quoteId);
+    }
+
+    /**
      * saveFavoriteQuote
      * Description: This method saves a quote as favorite for authenticated users
      * @param int $userId
@@ -189,5 +201,16 @@ class QuoteService
     public function getReportOfFavoriteQuotes(): array
     {
         return $this->quotesDatabaseService->getAllFavoriteQuotes();
+    }
+
+    /**
+     * deleteFavoriteQuote
+     * Description: This method deletes a favorite quote for authenticated users
+     * @param int $userId
+     * @param int $quoteId
+     */
+    public function deleteFavoriteQuote(int $userId, int $quoteId): void
+    {
+        $this->quotesDatabaseService->deleteFavoriteQuote($userId, $quoteId);
     }
 }
