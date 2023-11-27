@@ -62,13 +62,6 @@ Route::get('/today/new', 'App\Http\Controllers\QuoteController@newToday');
 Route::get('/secure-quotes', 'App\Http\Controllers\QuoteController@secureQuotes')->middleware('auth:sanctum');
 
 /**
- * Api endpoint /api/secure-quotes/new
- *  Type: GET
- *  Description: clear cache and returns quotes for authenticated user
- */
-Route::get('/secure-quotes/new', 'App\Http\Controllers\QuoteController@newSecureQuotes')->middleware('auth:sanctum');
-
-/**
  * Api endpoint /api/quotes
  * Type: GET
  * Description: Returns five random quotes for non-authenticated user and authenticated user

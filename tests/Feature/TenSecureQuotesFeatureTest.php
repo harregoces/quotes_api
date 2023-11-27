@@ -66,31 +66,25 @@ class TenSecureQuotesFeatureTest extends TestCase
         );
         $response->assertStatus(200);
         $this->assertTrue($response->json()['quotes'][0]['cached']);
-    }
 
-    /**
-     * There should be a button to force a reload of list of 10 random quotes with a “new” parameter (e.g., /api/secure-quotes/new).
-     */
-    public function testSecureQuotesNew(): void
-    {
-        $response = $this->post('/api/login', [
-            'email' => 'test@test.com',
-            'password' => 'password',
-        ]);
+        /**
+         * Check if the quotes are not cached after /api/secure-quotes?new=true
+         */
+        $response = $this->get('/api/secure-quotes?new=true',
+            [ 'Authorization' => 'Bearer ' . $token, ]
+        );
+        $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            'user' => [
-                'id',
-                'name',
-                'email',
-                'email_verified_at',
-                'created_at',
-                'updated_at',
+            'quotes' => [
+                '*' => [
+                    'quote',
+                    'author',
+                    'cached'
+                ]
             ],
-            'token',
         ]);
-
-        $token = $response->json()['token'];
-        $userId = $response->json()['user']['id'];
+        $this->assertFalse($response->json()['quotes'][0]['cached']);
     }
+
 }
