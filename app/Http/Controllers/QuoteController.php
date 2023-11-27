@@ -33,25 +33,12 @@ class QuoteController extends BaseController
      */
     public function today(Request $request): \Illuminate\Http\JsonResponse
     {
-        $quote = $this->quoteService->getTodayQuote();
+        $new = $request->input('new', false);
+        $quote = $this->quoteService->getTodayQuote($new);
         return response()->json([
             'quote' => $quote
         ], 200);
     }
-
-    /**
-     * Api endpoint /api/today/new
-     * Type: GET
-     * Description: clear cache and returns a quote for non-authenticated user
-     */
-    public function newToday(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $quote = $this->quoteService->getTodayQuote(true);
-        return response()->json([
-            'quote' => $quote
-        ], 200);
-    }
-
 
     /**
      * Api endpoint /api/favoriteQuotes
