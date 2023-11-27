@@ -82,7 +82,7 @@ class FiveRandomQuotesFeatureTest extends TestCase
         ]);
         $this->assertFalse($response->json()['quotes'][0]['cached']);
 
-        $response = $this->get('/api/quotes/new');
+        $response = $this->get('/api/quotes?new=true');
         $response->assertStatus(200);
 
         $this->assertFalse($response->json()['quotes'][0]['cached']);

@@ -76,13 +76,6 @@ Route::get('/secure-quotes/new', 'App\Http\Controllers\QuoteController@newSecure
 Route::get('/quotes', 'App\Http\Controllers\QuoteController@quotes');
 
 /**
- * Api endpoint /api/quotes/new
- * Type: GET
- * Description: clear cache and returns five random quotes for non-authenticated user and authenticated user
- */
-Route::get('/quotes/new', 'App\Http\Controllers\QuoteController@newQuotes');
-
-/**
  * Api endpoint /api/favorite-quotes
  * Type: GET
  * Description: Returns favorite quotes for authenticated user

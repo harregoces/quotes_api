@@ -86,21 +86,8 @@ class QuoteController extends BaseController
     public function quotes(Request $request): \Illuminate\Http\JsonResponse
     {
         $quoteLimit = $request->input('quoteLimit', 5);
-        $quotes = $this->quoteService->getUnSecureQuotes($quoteLimit, CacheServiceInterface::FIVE_QUOTES_KEY);
-        return response()->json([
-            'quotes' => $quotes
-        ], 200);
-    }
-
-    /**
-     * Api endpoint /api/quotes/new
-     * Type: GET
-     * Description: clear cache and returns five random quotes for non-authenticated user and authenticated user
-     */
-    public function newQuotes(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $quoteLimit = $request->input('quoteLimit', 5);
-        $quotes = $this->quoteService->getUnSecureQuotes($quoteLimit, CacheServiceInterface::FIVE_QUOTES_KEY, true);
+        $new = $request->input('new', false);
+        $quotes = $this->quoteService->getUnSecureQuotes($quoteLimit, CacheServiceInterface::FIVE_QUOTES_KEY, $new);
         return response()->json([
             'quotes' => $quotes
         ], 200);
