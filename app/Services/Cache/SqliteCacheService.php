@@ -1,12 +1,6 @@
 <?php
 
-/**
- * sqliteCacheService.php
- * Description: This class implements the cacheServiceInterface
- * Author: Hernan Arregoces
- * implement: cacheServiceInterface
- */
-namespace App\Http\Services;
+namespace App\Services\Cache;
 use App\Http\Interfaces\CacheServiceInterface;
 use App\Models\Cache;
 
@@ -20,6 +14,7 @@ class SqliteCacheService implements CacheServiceInterface
     /**
      * get
      * Description: This method fetches a value from cache table
+     *              Check if expiration_time is greater than 30 seconds
      * Parameter: string $key: key to fetch
      * Parameter: int $userid: userid to fetch
      * @param string $key
@@ -28,7 +23,12 @@ class SqliteCacheService implements CacheServiceInterface
      */
     public function get(string $key, int $userid): ?string
     {
-        $cache = Cache::where(['key' => $key, 'userid' => $userid])->first();
+        $this->clearExpired();
+        $cache = Cache::where([
+            'key' => $key,
+            'userid' => $userid,
+            ['expiration_time', '>=', time()]
+        ])->first();
         if ($cache) {
             return $cache->value;
         }
@@ -51,9 +51,10 @@ class SqliteCacheService implements CacheServiceInterface
         $cache = Cache::where(['key' => $key, 'userid' => $userid])->first();
         if ($cache) {
             $cache->value = $value;
+            $cache->expiration_time = time() + 30;
             $cache->save();
         } else {
-            Cache::create(['key' => $key, 'userid' => $userid, 'value' => $value]);
+            Cache::create(['key' => $key, 'userid' => $userid, 'value' => $value, 'expiration_time' => time() + 30]);
         }
     }
 
@@ -68,5 +69,13 @@ class SqliteCacheService implements CacheServiceInterface
     public function clear(string $key, int $userid): void
     {
         Cache::where(['key' => $key, 'userid' => $userid])->delete();
+    }
+
+    /**
+     * Clear cache key with expiration_time less than current time
+     */
+    private function clearExpired(): void
+    {
+        Cache::where('expiration_time', '<', time())->delete();
     }
 }

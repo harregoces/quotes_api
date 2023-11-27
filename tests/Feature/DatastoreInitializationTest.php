@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 
 /**
- * 3.    Feature: Datastore Initialization
+ * 3.   Feature: Datastore Initialization
  * o    Datastore should be initialized with 3 users.
  * o    Datastore should be initialized with a list containing 3 favorite quotes for each seeded user.
  */

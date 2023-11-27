@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('key');
             $table->integer('userid');
             $table->string('value');
-            $table->integer('expiration_time')->default(300);
+            $table->integer('expiration_time')->default(0);
         });
     }
 

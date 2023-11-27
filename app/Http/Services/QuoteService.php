@@ -8,11 +8,12 @@
 
 namespace App\Http\Services;
 
-use App\Http\Interfaces\QuoteServiceInterface;
-use App\Http\Interfaces\QuoteMarshalService;
 use App\Http\Interfaces\CacheServiceInterface;
+use App\Http\Interfaces\QuoteMarshalService;
+use App\Http\Interfaces\QuoteServiceInterface;
 use App\Http\Services\ZendQuotes\ZenQuotesMarshalService;
 use App\Http\Services\ZendQuotes\ZenQuotesService;
+use App\Services\Cache\SqliteCacheService;
 
 class QuoteService
 {
