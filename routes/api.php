@@ -1,7 +1,5 @@
-
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,23 +63,28 @@ Route::middleware(['auth:sanctum', 'throttle:5,30'])->group(function () {
      */
     Route::get('/report-favorite-quotes', 'App\Http\Controllers\QuoteController@reportFavoriteQuotes');
 
-});
-
-Route::middleware('throttle:5,30')->group(function () {
-
-    /**
-     * Api endpoint /api/login
-     * Type: POST
-     * Description: Returns a token for the authenticated user
-     */
-    Route::post('login', 'App\Http\Controllers\UserController@login')->name('login');
-
     /**
      * Api endpoint /api/logout
      * Type: POST
      * Description: Returns a token for the authenticated user
      */
-    Route::post('logout', 'App\Http\Controllers\UserController@logout')->middleware('auth:sanctum');
+    Route::post('/logout', 'App\Http\Controllers\UserController@logout');
+
+    /**
+     * Api endpoint /api/quotes
+     * Type: GET
+     * Description: Returns five random quotes for non-authenticated user and authenticated user
+     */
+    //Route::get('/quotes', 'App\Http\Controllers\QuoteController@quotes');
+});
+
+Route::middleware('throttle:5,30')->group(function () {
+    /**
+     * Api endpoint /api/login
+     * Type: POST
+     * Description: Returns a token for the authenticated user
+     */
+    Route::post('/login', 'App\Http\Controllers\UserController@login')->name('login');
 
     /**
      * Api endpoint /api/register
@@ -96,4 +99,11 @@ Route::middleware('throttle:5,30')->group(function () {
      * Description: Returns a quote for non-authenticated user
      */
     Route::get('/today', 'App\Http\Controllers\QuoteController@today');
+
+    /**
+     * Api endpoint /api/quotes
+     * Type: GET
+     * Description: Returns five random quotes for non-authenticated user and authenticated user
+     */
+    Route::get('/quotes', 'App\Http\Controllers\QuoteController@quotes');
 });

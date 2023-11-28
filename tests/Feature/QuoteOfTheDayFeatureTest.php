@@ -97,7 +97,7 @@ class QuoteOfTheDayFeatureTest extends TestCase
         ]);
         $this->assertTrue($response->json()['quote']['cached']);
 
-        $response = $this->get('/api/today/new');
+        $response = $this->get('/api/today?new=true');
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'quote' => [

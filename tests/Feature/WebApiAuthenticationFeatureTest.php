@@ -162,10 +162,10 @@ class WebApiAuthenticationFeatureTest extends TestCase
             ],
             'token',
         ]);
-
+        $token = $response->json()['token'];
         $response = $this->get('/api/favorite-quotes',
             [
-                'Authorization' => 'Bearer ' . $response->json()['token'],
+                'Authorization' => 'Bearer ' . $token,
             ]
         );
         $response->assertJsonStructure([
@@ -178,14 +178,17 @@ class WebApiAuthenticationFeatureTest extends TestCase
             ],
         ]);
 
-        $response = $this->post('/api/logout');
+        $response = $this->post('/api/logout',
+            [
+                'Authorization' => 'Bearer ' . $token,
+            ]
+        );
         $response->assertStatus(200);
 
         $response = $this->post('/api/login', [
             'email' => 'test@test.com',
             'password' => 'password',
         ]);
-
         $response->assertJsonStructure([
             'user' => [
                 'id',
