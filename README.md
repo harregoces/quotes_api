@@ -18,7 +18,7 @@ The API has the following endpoints:
 #### - GET `/api/today`
 Returns a quote for non-authenticated user
 
-#### - GET `/api/today/new`
+#### - GET `/api/today?new=true`
 clear cache and returns a quote for non-authenticated user
 
 #### - GET `/api/secure-quotes`
@@ -27,13 +27,13 @@ Returns quotes for authenticated user
 #### - GET `/api/secure-quotes`
 Returns quotes for authenticated user
 
-#### - GET `/api/secure-quotes/new`
+#### - GET `/api/secure-quotes?new=true`
 clear cache and returns quotes for authenticated user
 
 #### - GET `/api/quotes`
 Returns five random quotes for non-authenticated user and authenticated user
 
-#### - GET `/api/quotes/new`
+#### - GET `/api/quotes?new=true'throttle:5,30'`
 clear cache and returns five random quotes for non-authenticated user and authenticated user
 
 #### - GET `/api/favorite-quotes`
@@ -83,3 +83,22 @@ The API will return a token that can be used to authenticate future requests. To
 ### API Diagram
 ![API Diagram](/resources/images/thirdpartyuse.png)
 
+
+# Features checklist
+- Code Repository ![Implemented](https://img.shields.io/badge/-Implemented-red)
+- Datastore ![Implemented](https://img.shields.io/badge/-Implemented-red)
+- Datastore Initialization ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- Cache ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- API Authentication ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- Api Registration for users ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- Quote of the Day ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- Five Random QUotes ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- Ten Secure Quotes ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- Favorite Quotes ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- Report of Favorite Quotes ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- REST API for Five Random Quotes ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- REST API for Ten Secure Quotes ![Implemented](https://img.shields.io/badge/-Implemented-red) ![Tested](https://img.shields.io/badge/-Tested-green)
+- Online API Test
+- Console/Shell Command for Five Random Quotes ![Implemented](https://img.shields.io/badge/-Implemented-red)
+- PHP Automated Testing
+- Documentation ![Implemented](https://img.shields.io/badge/-Implemented-red)
