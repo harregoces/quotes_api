@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'throttle:5,30'])->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:5,30', 'cors'])->group(function () {
     /**
      * Api endpoint /api/favorite-quotes
      * Type: GET
@@ -78,7 +78,7 @@ Route::middleware(['auth:sanctum', 'throttle:5,30'])->group(function () {
     //Route::get('/quotes', 'App\Http\Controllers\QuoteController@quotes');
 });
 
-Route::middleware('throttle:5,30')->group(function () {
+Route::middleware(['throttle:5,30', 'cors'])->group(function () {
     /**
      * Api endpoint /api/login
      * Type: POST
