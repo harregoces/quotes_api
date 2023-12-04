@@ -44,4 +44,9 @@ class ApiNinjaQuotesService implements QuoteServiceInterface
         curl_close($curl);
         return $response;
     }
+
+    public function getTodayQuote(): string
+    {
+        return $this->getQuotes(1);
+    }
 }

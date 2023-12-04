@@ -152,4 +152,29 @@ class QuotesDatabaseService
             ->where('quote_id', $quoteId)
             ->delete();
     }
+
+    /**
+     * saveQuote
+     * Description: This method saves a quote in the quotes table
+     * @param Quote $quote
+     * @return bool
+     */
+    public function saveQuote(Quote $quote): bool
+    {
+        if( $quote->getId() == null ) {
+            $quoteRecord = new QuoteModel();
+            $quoteRecord->quote = $quote->getQuote();
+            $quoteRecord->author = $quote->getAuthor();
+            return $quoteRecord->save();
+        }
+
+        $quoteRecord = $this->quotesModel->where('id', $quote->getId())->first();
+        if (!$quoteRecord) {
+            $quoteRecord = new QuoteModel();
+            $quoteRecord->quote = $quote->getQuote();
+            $quoteRecord->author = $quote->getAuthor();
+            return $quoteRecord->save();
+        }
+        return false;
+    }
 }

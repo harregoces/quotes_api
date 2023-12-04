@@ -43,6 +43,7 @@ class QuoteService
      */
     public function __construct(QuotesDatabaseService $quotesDatabaseService)
     {
+        // TODO: Apply the Factory pattern
         $this->quotesService = new ZenQuotesService();
         $this->quotesMarshalService = new ZenQuotesMarshalService();
         $this->cacheService = new SqliteCacheService();
@@ -136,9 +137,6 @@ class QuoteService
         if ($quotes) {
             $quotes = $this->quotesMarshalService->marshal($quotes);
             $quotes = array_map(function($quote) {
-                /**
-                 * @var Quote $quote
-                 */
                 $quote->setCached(true);
                 return $quote;
             }, $quotes);
